@@ -33,7 +33,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class ChooseAreaFragment extends Fragment {
-
+    public static final String TAG = ChooseAreaFragment.class.getSimpleName();
     public static final int LEVEL_PROVINCE=0;
     public static final int LEVEL_CITY=1;
     public static final int LEVEL_COUNTY=2;
@@ -127,7 +127,7 @@ public class ChooseAreaFragment extends Fragment {
         if (cityList.size() > 0) {
             dataList.clear();
             for (City city : cityList) {
-                dataList.add(selectedCity.getCityName());
+                dataList.add(city.getCityName());
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
@@ -155,13 +155,14 @@ public class ChooseAreaFragment extends Fragment {
                 int provinceCode = selectedProvince.getProviceCode();
                 int cityCode = selectedCity.getCityCode();
                 String address = "http://guolin.tech/api/china/" + provinceCode + "/" + cityCode;
+                Log.d(TAG, "queryCounties: "+address);
                 queryFromServer(address, "county");
             }
 
         }
         private  void queryFromServer(String address,final String type){
         showProgressDialog();
-            HttpUtil.sendOkHttpRequset(address, new Callback() {
+            HttpUtil.sendOkHttpRequest(address, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
