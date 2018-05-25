@@ -8,7 +8,7 @@ public class Basic {
     public String cityName;
 
     @SerializedName("id")
-    public String weatherTd;
+    public String weatherId;
 
 
     public Update update;
