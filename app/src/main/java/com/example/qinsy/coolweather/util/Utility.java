@@ -6,6 +6,8 @@ import android.util.Log;
 import com.example.qinsy.coolweather.db.City;
 import com.example.qinsy.coolweather.db.County;
 import com.example.qinsy.coolweather.db.Province;
+import com.example.qinsy.coolweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +24,6 @@ public class Utility {
                     Province province=new Province();
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProviceCode(provinceObject.getInt("id"));
-                    Log.d("waddddddddddddd",province.getProvinceName());
                     province.save();
                 }return true;
             }catch (JSONException e){
@@ -66,7 +67,17 @@ public class Utility {
         }return  false;
     }
 
-
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  null;
+    }
 
 
 
